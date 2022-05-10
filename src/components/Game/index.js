@@ -14,19 +14,19 @@ export function Game() {
             .then((response) => {
                 response.json().then((body) => setSecret(body.word))
             })
-            .catch((error) => console.log('hata', {error}))
+            .catch(() => (alert('Error! Unable to connect backend.')))
     }, [])
 
-    useEffect(() => {
-        fetch('http://localhost:5999/session',
-            {
-                method: 'POST',
-                body: JSON.stringify({username: 'sueda', password: '123456'}),
-                headers: {'content-type': 'application/json'}
-            })
-            .then((response) => console.log(response))
-            .catch((error) => console.log('hata', {error}))
-    }, [])
+    // useEffect(() => {
+    //     fetch('http://localhost:5999/session',
+    //         {
+    //             method: 'POST',
+    //             body: JSON.stringify({username: 'sueda', password: '123456'}),
+    //             headers: {'content-type': 'application/json'}
+    //         })
+    //         .then((response) => console.log(response))
+    //         .catch((error) => console.log('hata', {error}))
+    // }, [])
 
 
     let lettersColorObj = {};
