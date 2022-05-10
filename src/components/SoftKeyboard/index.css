@@ -1,0 +1,54 @@
+.keyboard-container {
+    background-color: red;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.keyboard-row-container {
+    display: flex;
+    /*flex-direction: row;*/
+    /*height: 100%;*/
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.key {
+    background-color: white;
+    width: 43px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 3px;
+}
+
+.key-grey {
+    background-color: grey;
+}
+
+.key-green {
+    background-color: green;
+}
+
+.key-yellow {
+    background-color: yellow;
+}
+
+.key-second-row {
+    background-color: white;
+    width: 35px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 3px;
+}
