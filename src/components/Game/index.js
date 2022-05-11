@@ -10,7 +10,7 @@ export function Game() {
     const [lettersInfo, setLettersInfo] = useState({});
 
     useEffect(() => {
-        fetch('http://localhost:5999/word')
+        fetch(`${process.env.REACT_APP_BASE_URL}/word`)
             .then((response) => {
                 response.json().then((body) => setSecret(body.word))
             })
