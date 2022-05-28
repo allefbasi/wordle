@@ -9,6 +9,7 @@ export function Game() {
     const [letterArray, setLetterArray] = useState([]);
     const [previousGuessList, setPreviousGuessList] = useState([]);
     const [lettersInfo, setLettersInfo] = useState({});
+    const [didGameEnd, setDidGameEnd] = useState(false);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/word`)
@@ -31,34 +32,43 @@ export function Game() {
 
 
     const onEnterClick = () => {
-        if (letterArray.length === 5) {
-            const newColorArray = compareWords(letterArray, secret);
-            const currentGuess = [];
-            for (let i = 0; i < letterArray.length; i++) {
-                const letterObject = {value: letterArray[i], color: newColorArray[i]};
-                currentGuess.push(letterObject);
-                for (const guess of currentGuess) {
-                    const prevColor = lettersInfo[guess.value];
-                    if (!prevColor) {
+        if (letterArray.length !== 5) {
+            return;
+        }
+        let gameEnd = true;
+        const newColorArray = compareWords(letterArray, secret);
+        const currentGuess = [];
+        for (let i = 0; i < letterArray.length; i++) {
+            if(newColorArray[i] !== COLOR_GREEN){
+                gameEnd = false;
+            }
+            const letterObject = {value: letterArray[i], color: newColorArray[i]};
+            currentGuess.push(letterObject);
+            for (const guess of currentGuess) {
+                const prevColor = lettersInfo[guess.value];
+                if (!prevColor) {
+                    lettersInfo[guess.value] = guess.color;
+                } else if (prevColor === COLOR_GREY) {
+                    lettersInfo[guess.value] = guess.color;
+                } else if (prevColor === COLOR_YELLOW) {
+                    if (guess.color === COLOR_GREEN) {
                         lettersInfo[guess.value] = guess.color;
-                    } else if (prevColor === COLOR_GREY) {
-                        lettersInfo[guess.value] = guess.color;
-                    } else if (prevColor === COLOR_YELLOW) {
-                        if (guess.color === COLOR_GREEN) {
-                            lettersInfo[guess.value] = guess.color;
-                        }
-                    } else if (prevColor === COLOR_GREEN) {
-                        // do nothing
                     }
+                } else if (prevColor === COLOR_GREEN) {
+                    // do nothing
                 }
             }
-            setLettersInfo(lettersInfo);
-            setPreviousGuessList([...previousGuessList, currentGuess]);
-            setLetterArray([]);
         }
+        setLettersInfo(lettersInfo);
+        setPreviousGuessList([...previousGuessList, currentGuess]);
+        setLetterArray([]);
+        setDidGameEnd(gameEnd);
     }
 
     const onClickLetter = (letter) => {
+        if(didGameEnd){
+            return;
+        }
         if (letter === 'DEL') {
             const newArray = [...letterArray];
             newArray.pop();

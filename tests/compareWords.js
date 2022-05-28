@@ -1,4 +1,5 @@
 import {compareWords} from "../src/compareWords.js";
+import {COLOR_GREY, COLOR_GREEN, COLOR_YELLOW} from "../src/consts/colors";
 
 function areArraysEqual(array1, array2) {
     if (array1.length !== array2.length) {
@@ -31,7 +32,7 @@ function testCase1() {
     const secret = 'LEMON';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['green', 'green', 'green', 'green', 'green'];
+    const expected = [COLOR_GREEN, COLOR_GREEN, COLOR_GREEN, COLOR_GREEN, COLOR_GREEN];
     compare('case 1', colorArray, expected)
 }
 
@@ -40,7 +41,7 @@ function testCase2() {
     const secret = 'LEMON';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['green', 'grey', 'yellow', 'yellow', 'grey'];
+    const expected = [COLOR_GREEN, COLOR_GREY, COLOR_YELLOW, COLOR_YELLOW, COLOR_GREY];
     compare('case 2', colorArray, expected)
 }
 
@@ -49,7 +50,7 @@ function testCase3() {
     const secret = 'LEMON';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['grey', 'grey', 'grey', 'grey', 'grey'];
+    const expected = [COLOR_GREY, COLOR_GREY, COLOR_GREY, COLOR_GREY, COLOR_GREY];
     compare('case 3', colorArray, expected)
 }
 
@@ -58,7 +59,7 @@ function testCase4() {
     const secret = 'LEMON';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['yellow', 'yellow', 'yellow', 'yellow', 'yellow'];
+    const expected = [COLOR_YELLOW, COLOR_YELLOW, COLOR_YELLOW, COLOR_YELLOW, COLOR_YELLOW];
     compare('case 4', colorArray, expected)
 }
 
@@ -67,7 +68,7 @@ function testCase5() {
     const secret = 'LEMON';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['grey', 'yellow', 'yellow', 'yellow', 'grey'];
+    const expected = [COLOR_GREY, COLOR_YELLOW, COLOR_YELLOW, COLOR_YELLOW, COLOR_GREY];
     compare('case 5', colorArray, expected)
 }
 
@@ -77,7 +78,7 @@ function testCase6() {
     const secret = 'LEMEN';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['grey', 'grey', 'yellow', 'yellow', 'yellow'];
+    const expected = [COLOR_GREY, COLOR_GREY, COLOR_YELLOW, COLOR_YELLOW, COLOR_YELLOW];
     compare('case 6', colorArray, expected)
 }
 
@@ -86,7 +87,7 @@ function testCase7() {
     const secret = 'LEMON';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['green', 'grey', 'green', 'green', 'green'];
+    const expected = [COLOR_GREEN, COLOR_GREY, COLOR_GREEN, COLOR_GREEN, COLOR_GREEN];
     compare('case 7', colorArray, expected)
 }
 
@@ -95,7 +96,7 @@ function testCase8() {
     const secret = 'LEMON';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['green', 'yellow', 'grey', 'grey', 'grey'];
+    const expected = [COLOR_GREEN, COLOR_YELLOW, COLOR_GREY, COLOR_GREY, COLOR_GREY];
     compare('case 8', colorArray, expected)
 }
 
@@ -104,16 +105,16 @@ function testCase9() {
     const secret = 'NEMON';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['green', 'yellow', 'grey', 'grey', 'grey'];
+    const expected = [COLOR_GREEN, COLOR_YELLOW, COLOR_GREY, COLOR_GREY, COLOR_GREY];
     compare('case 9', colorArray, expected)
 }
 
 function testCase10() {
     const guess = 'EGEET'
-    const secret = 'GREEN';
+    const secret = COLOR_GREEN;
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['grey', 'yellow', 'green', 'green', 'grey'];
+    const expected = [COLOR_GREY, COLOR_YELLOW, COLOR_GREEN, COLOR_GREEN, COLOR_GREY];
     compare('case 10', colorArray, expected)
 }
 
@@ -122,7 +123,7 @@ function testCase11() {
     const secret = 'AAXXX';
     const guessArray = guess.split('');
     const colorArray = compareWords(guessArray, secret);
-    const expected = ['green', 'green', 'grey', 'grey', 'grey'];
+    const expected = [COLOR_GREEN, COLOR_GREEN, COLOR_GREY, COLOR_GREY, COLOR_GREY];
     compare('case 11', colorArray, expected)
 }
 
