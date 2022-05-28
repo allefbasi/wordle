@@ -1,3 +1,9 @@
 body {
     background: #121213;
 }
+
+.toastText {
+    font-weight: bold;
+    text-align: center;
+}
+

@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {GuessStage} from "../GuessStage";
 import {compareWords} from "../../compareWords";
 import {COLOR_GREY, COLOR_GREEN, COLOR_YELLOW} from "../../consts/colors";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export function Game() {
     const [secret, setSecret] = useState(null);
@@ -16,7 +18,7 @@ export function Game() {
             .then((response) => {
                 response.json().then((body) => setSecret(body.word))
             })
-            .catch(() => (alert('Error! Unable to connect backend.')))
+            .catch(() => showToast('Bir hata oluştu. Lütfen tekrar deneyin.'))
     }, [])
 
     // useEffect(() => {
@@ -30,20 +32,17 @@ export function Game() {
     //         .catch((error) => console.log('hata', {error}))
     // }, [])
 
-
-    const onEnterClick = () => {
-        if (letterArray.length !== 5) {
-            return;
-        }
+    const processGuess = () => {
         let gameEnd = true;
         const newColorArray = compareWords(letterArray, secret);
         const currentGuess = [];
         for (let i = 0; i < letterArray.length; i++) {
-            if(newColorArray[i] !== COLOR_GREEN){
+            if (newColorArray[i] !== COLOR_GREEN) {
                 gameEnd = false;
             }
             const letterObject = {value: letterArray[i], color: newColorArray[i]};
             currentGuess.push(letterObject);
+
             for (const guess of currentGuess) {
                 const prevColor = lettersInfo[guess.value];
                 if (!prevColor) {
@@ -65,8 +64,43 @@ export function Game() {
         setDidGameEnd(gameEnd);
     }
 
+    const showToast = (message) => {
+        toast(message, {
+            position: "top-center",
+            autoClose: 500,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            closeButton: false,
+            bodyClassName: 'toastText',
+        });
+    }
+
+    const onEnterClick = () => {
+        if (letterArray.length !== 5) {
+            return;
+        }
+        const guess = letterArray.join('');
+        fetch(`${process.env.REACT_APP_BASE_URL}/check-word?word=${guess}`,
+            {
+                method: 'GET',
+            })
+            .then((response) => {
+                response.json().then((body) => {
+                    if (body.exists !== true) {
+                        showToast('Kelime listesinde yok.');
+                        return;
+                    }
+                    processGuess();
+                })
+            })
+            .catch(() => showToast('Bir hata oluştu. Lütfen tekrar deneyin.'))
+    }
+
     const onClickLetter = (letter) => {
-        if(didGameEnd){
+        if (didGameEnd) {
             return;
         }
         if (letter === 'DEL') {
@@ -102,6 +136,7 @@ export function Game() {
             <div style={{height: '30vh'}}>
                 <SoftKeyboard lettersInfo={lettersInfo} onClickLetter={(letter) => onClickLetter(letter)}/>
             </div>
+            <ToastContainer/>
         </>
 
     )
