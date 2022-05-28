@@ -1,13 +1,15 @@
+import {COLOR_GREY, COLOR_GREEN, COLOR_YELLOW} from "./consts/colors";
+
 export function compareWords(guessArray, secret) {
     const secretArray = secret.split('');
     const colorArray = [];
     for (let i = 0; i < guessArray.length; i++) {
         const guessLetter = guessArray[i];
         if (guessLetter === secretArray[i]) {
-            colorArray[i] = 'green';
+            colorArray[i] = COLOR_GREEN;
             continue;
         }
-        let color = 'grey';
+        let color = COLOR_GREY;
         for (let j = 0; j < secretArray.length; j++) {
             const secretLetter = secretArray[j];
             if (guessLetter === secretLetter) {
@@ -34,7 +36,7 @@ export function compareWords(guessArray, secret) {
                 }
 
                 if (greenCount + yellowToBeCount < letterInSecretCount) {
-                    color = 'yellow';
+                    color = COLOR_YELLOW;
                 }
                 break;
             }

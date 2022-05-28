@@ -7,7 +7,7 @@ export function SoftKeyboard(props) {
     const keyboardItems = [
         ['E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Ğ', 'Ü'],
         ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ş', 'İ'],
-        ['ENTER', 'Z', 'C', 'V', 'B', 'N', 'M', 'Ö', 'Ç', '<'],
+        ['ENTER', 'Z', 'C', 'V', 'B', 'N', 'M', 'Ö', 'Ç', 'DEL'],
     ];
 
     const keyColor = (item) => {
@@ -33,7 +33,7 @@ export function SoftKeyboard(props) {
                             /> :
                             rowCount === 2 ?
                                 <LetterSquare key={item} className='key'
-                                              style={item === 'ENTER' || item === '<' ? {
+                                              style={item === 'ENTER' || item === 'DEL' ? {
                                                   width: '58px',
                                                   backgroundColor: keyColor(item)
                                               } : {width: '39px', backgroundColor: keyColor(item)}}

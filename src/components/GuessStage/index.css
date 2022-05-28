@@ -1,5 +1,5 @@
 .guess-stage-container {
-    background-color: blue;
+    /*background-color: blue;*/
     height: 100%;
     display: flex;
     justify-content: center;
@@ -10,8 +10,8 @@
 .letter-container {
     width: 60px;
     height: 60px;
-    background-color: white;
-    border: 1px solid black;
+    background-color: #121213;
+    border: 2px solid #3a3a3c;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,6 +19,7 @@
     font-weight: bold;
     flex-direction: row;
     margin-right: 4px;
+    color: white;
 }
 
 .guess-row-container {

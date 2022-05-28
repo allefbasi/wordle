@@ -2,6 +2,7 @@ import {SoftKeyboard} from "../SoftKeyboard";
 import {useEffect, useState} from "react";
 import {GuessStage} from "../GuessStage";
 import {compareWords} from "../../compareWords";
+import {COLOR_GREY, COLOR_GREEN, COLOR_YELLOW} from "../../consts/colors";
 
 export function Game() {
     const [secret, setSecret] = useState(null);
@@ -29,29 +30,36 @@ export function Game() {
     // }, [])
 
 
-    let lettersColorObj = {};
-    const guesses = [];
     const onEnterClick = () => {
         if (letterArray.length === 5) {
             const newColorArray = compareWords(letterArray, secret);
             const currentGuess = [];
             for (let i = 0; i < letterArray.length; i++) {
-                let letterObject = {value: letterArray[i], color: newColorArray[i]};
+                const letterObject = {value: letterArray[i], color: newColorArray[i]};
                 currentGuess.push(letterObject);
-                guesses.push(letterObject);
-                for (const guess of guesses) {
-                    console.log(guess)
-                    lettersColorObj[guess.value] = guess.color;
+                for (const guess of currentGuess) {
+                    const prevColor = lettersInfo[guess.value];
+                    if (!prevColor) {
+                        lettersInfo[guess.value] = guess.color;
+                    } else if (prevColor === COLOR_GREY) {
+                        lettersInfo[guess.value] = guess.color;
+                    } else if (prevColor === COLOR_YELLOW) {
+                        if (guess.color === COLOR_GREEN) {
+                            lettersInfo[guess.value] = guess.color;
+                        }
+                    } else if (prevColor === COLOR_GREEN) {
+                        // do nothing
+                    }
                 }
             }
-            setLettersInfo(lettersColorObj);
+            setLettersInfo(lettersInfo);
             setPreviousGuessList([...previousGuessList, currentGuess]);
             setLetterArray([]);
         }
     }
 
     const onClickLetter = (letter) => {
-        if (letter === '<') {
+        if (letter === 'DEL') {
             const newArray = [...letterArray];
             newArray.pop();
             setLetterArray(newArray);
