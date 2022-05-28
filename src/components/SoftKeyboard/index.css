@@ -29,30 +29,9 @@
     margin-right: 3px;
     color: white;
     font-weight: bold;
-}
-
-.key-grey {
-    background-color: #3a3a3c;
-}
-
-.key-green {
-    background-color: green;
-}
-
-.key-yellow {
-    background-color: yellow;
+    cursor: pointer;
 }
 
 .key-second-row {
     width: 35px;
-    height: 60px;
-    border: 1px solid black;
-    border-radius: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 3px;
-    background-color: #818384;
-    color: white;
-    font-weight: bold;
 }

@@ -21,12 +21,10 @@ export function SoftKeyboard(props) {
     return (
         <div className='keyboard-container'>
             {
-                // keyboardItems.map((item) => <div key={item} className='key'
-                //                                  onClick={() => props.onClickLetter(item)}>{item}</div>)
                 keyboardItems.map((row, rowCount) =>
                     <div className='keyboard-row-container' key={rowCount}>{row.map((item) =>
                         rowCount === 1 ?
-                            <LetterSquare key={item} className='key-second-row'
+                            <LetterSquare key={item} className='key key-second-row'
                                           onClick={() => props.onClickLetter(item)}
                                           value={item}
                                           style={{backgroundColor: keyColor(item)}}
