@@ -5,6 +5,7 @@ import {compareWords} from "../../compareWords";
 import {COLOR_GREY, COLOR_GREEN, COLOR_YELLOW} from "../../consts/colors";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Modal from 'react-modal';
 
 export function Game() {
     const [secret, setSecret] = useState(null);
@@ -12,6 +13,8 @@ export function Game() {
     const [previousGuessList, setPreviousGuessList] = useState([]);
     const [lettersInfo, setLettersInfo] = useState({});
     const [didGameEnd, setDidGameEnd] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [gameFail, setGameFail] = useState(false);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/word`)
@@ -58,12 +61,23 @@ export function Game() {
                 }
             }
         }
+        if(previousGuessList.length === 5 && didGameEnd !== true) {
+            setDidGameEnd(true);
+            setModalIsOpen(true);
+            setGameFail(true)
+        }
         setLettersInfo(lettersInfo);
         setPreviousGuessList([...previousGuessList, currentGuess]);
         setLetterArray([]);
         setDidGameEnd(gameEnd);
+        if (gameEnd) {
+            setModalIsOpen(true)
+        }
     }
 
+    const closeModal = () => {
+        setModalIsOpen(false);
+    }
     const showToast = (message) => {
         toast(message, {
             position: "top-center",
@@ -113,7 +127,6 @@ export function Game() {
             onEnterClick();
             return;
         }
-
         if (letterArray.length >= 5) {
             return;
         }
@@ -126,6 +139,18 @@ export function Game() {
             <div>LOADING...</div>
         )
     }
+
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+        },
+    };
+
     return (
         <>
             <div style={{height: '70vh'}}>
@@ -137,6 +162,17 @@ export function Game() {
                 <SoftKeyboard lettersInfo={lettersInfo} onClickLetter={(letter) => onClickLetter(letter)}/>
             </div>
             <ToastContainer/>
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                style={customStyles}
+            >
+                <div style={{display: 'flex', justifyContent: 'right'}}>
+                    <span style={{fontSize: '20px', cursor: 'pointer'}} onClick={() => closeModal()}>&times;</span>
+                </div>
+                <h2>{gameFail ? 'Kaybettin.' : 'Kazandın!'}</h2>
+                <h2> Günün kelimesi: {secret}</h2>
+            </Modal>
         </>
 
     )
