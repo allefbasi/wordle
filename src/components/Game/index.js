@@ -7,22 +7,40 @@ import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from 'react-modal';
 
+const BOARD_STATE = JSON.parse(localStorage.getItem('boardState')) ;
+const KEYBOARD_STATE = JSON.parse(localStorage.getItem('keyboardState'));
+const GAME_SUCCESS = JSON.parse(localStorage.getItem('gameSuccess'));
+const SECRET_FROM_LOCALSTORAGE = JSON.parse(localStorage.getItem('secret'));
+
 export function Game() {
-    const [secret, setSecret] = useState(null);
+    const [secret, setSecret] = useState(SECRET_FROM_LOCALSTORAGE);
     const [letterArray, setLetterArray] = useState([]);
-    const [previousGuessList, setPreviousGuessList] = useState([]);
-    const [lettersInfo, setLettersInfo] = useState({});
-    const [didGameEnd, setDidGameEnd] = useState(false);
+    const [previousGuessList, setPreviousGuessList] = useState(BOARD_STATE || []);
+    const [lettersInfo, setLettersInfo] = useState(KEYBOARD_STATE || {});
+    const [didGameEnd, setDidGameEnd] = useState(GAME_SUCCESS || false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [gameFail, setGameFail] = useState(false);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/word`)
             .then((response) => {
-                response.json().then((body) => setSecret(body.word))
+                response.json().then((body) => {
+                    if(secret !== body.word) {
+                        setSecret(body.word);
+                        localStorage.clear();
+                        localStorage.setItem('secret', JSON.stringify(secret));
+                    }
+                })
             })
             .catch(() => showToast('Bir hata oluştu. Lütfen tekrar deneyin.'))
     }, [])
+
+
+    useEffect(() => {
+        localStorage.setItem('boardState', JSON.stringify(previousGuessList));
+        localStorage.setItem('keyboardState', JSON.stringify(lettersInfo));
+        localStorage.setItem('gameSuccess', JSON.stringify(didGameEnd));
+    }, [previousGuessList, lettersInfo, didGameEnd])
 
     // useEffect(() => {
     //     fetch('http://localhost:5999/session',
@@ -61,10 +79,10 @@ export function Game() {
                 }
             }
         }
-        if(previousGuessList.length === 5 && didGameEnd !== true) {
+        if (previousGuessList.length === 5 && didGameEnd !== true) {
             setDidGameEnd(true);
             setModalIsOpen(true);
-            setGameFail(true)
+            setGameFail(true);
         }
         setLettersInfo(lettersInfo);
         setPreviousGuessList([...previousGuessList, currentGuess]);
@@ -78,6 +96,7 @@ export function Game() {
     const closeModal = () => {
         setModalIsOpen(false);
     }
+
     const showToast = (message) => {
         toast(message, {
             position: "top-center",
@@ -114,9 +133,10 @@ export function Game() {
     }
 
     const onClickLetter = (letter) => {
-        if (didGameEnd) {
+        if (JSON.parse(localStorage.getItem('gameSuccess'))) {
             return;
         }
+        console.log(didGameEnd)
         if (letter === 'DEL') {
             const newArray = [...letterArray];
             newArray.pop();
@@ -156,10 +176,12 @@ export function Game() {
             <div style={{height: '70vh'}}>
                 {/*<GuessStage value={letter}/>*/}
                 {/*<GuessStage previousGuessList={previousGuessList} value={letterArray}/>*/}
-                <GuessStage previousGuessList={previousGuessList} letterArray={letterArray}/>
+                <GuessStage previousGuessList={previousGuessList}
+                            letterArray={letterArray}/>
             </div>
             <div style={{height: '30vh'}}>
-                <SoftKeyboard lettersInfo={lettersInfo} onClickLetter={(letter) => onClickLetter(letter)}/>
+                <SoftKeyboard lettersInfo={lettersInfo}
+                              onClickLetter={(letter) => onClickLetter(letter)}/>
             </div>
             <ToastContainer/>
             <Modal
