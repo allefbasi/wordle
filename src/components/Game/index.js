@@ -10,7 +10,7 @@ import Modal from 'react-modal';
 const BOARD_STATE = JSON.parse(localStorage.getItem('boardState')) ;
 const KEYBOARD_STATE = JSON.parse(localStorage.getItem('keyboardState'));
 const GAME_SUCCESS = JSON.parse(localStorage.getItem('gameSuccess'));
-const SECRET_FROM_LOCALSTORAGE = JSON.parse(localStorage.getItem('secret'));
+const SECRET_FROM_LOCALSTORAGE = localStorage.getItem('secret');
 
 export function Game() {
     const [secret, setSecret] = useState(SECRET_FROM_LOCALSTORAGE);
@@ -28,13 +28,13 @@ export function Game() {
                     if(secret !== body.word) {
                         setSecret(body.word);
                         localStorage.clear();
-                        localStorage.setItem('secret', JSON.stringify(secret));
+                        localStorage.setItem('secret', body.word);
                     }
                 })
             })
             .catch(() => showToast('Bir hata oluştu. Lütfen tekrar deneyin.'))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
 
     useEffect(() => {
         localStorage.setItem('boardState', JSON.stringify(previousGuessList));
@@ -136,7 +136,6 @@ export function Game() {
         if (JSON.parse(localStorage.getItem('gameSuccess'))) {
             return;
         }
-        console.log(didGameEnd)
         if (letter === 'DEL') {
             const newArray = [...letterArray];
             newArray.pop();
